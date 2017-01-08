@@ -22,37 +22,6 @@ python main.py <directory>
 
 The result is a **goingson.csv** despoited in the directory specified on the command line <direcotry>.
 
-## Tasks
-
-The main work for the Goings On tool is to grow and clean feeds from various cultural events across the city.
-
-*Feeds*
-
-- [x] Commonwealth Club #politics
-- [x] World Affairs Council #politics
-- [ ] Stubhub API #music
-- [ ] Oracle Arena &amp; Oakland Coliseum #music
-- [ ] Another Planet Entertainment Concert Venues (Greek, Bill Graham, Fox, Tahoe, Independent) #music
-- [ ] The Chapel #music
-- [ ] The Fillmore #music
-- [ ] Rickshaw Stop #music
-- [ ] SF Symphony #music
-- [ ] SFMoMa #art
-- [ ] Legion of Honor #art
-- [ ] DeYoung Museum #art
-- [ ] SF Opera #theatre
-- [ ] SF Ballet #theatre
-- [ ] A.C.T. #theatre
-- [ ] Castro Theatre RSS Feed #movies
-- [ ] Oddball Films Blog #movies
-- [ ] Punchline &amp; Cobb's Comedy #nightlife
-
-*Tools*
-
-- [ ] Front End Templates for Viewing GOSF
-- [ ] Django Framework
-- [ ] API for outputing list
-
 ## Copywrite
 
 Image: "[Sutro Tower](https://www.flickr.com/photos/thomashawk/73803631/)" by [Thomas Hawk](https://www.flickr.com/photos/thomashawk/) licensed under [CC BY 2.0](https://creativecommons.org/licenses/by-nc/2.0/)
