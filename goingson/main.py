@@ -5,7 +5,7 @@ from __future__ import print_function
 import sys
 import os
 from politics import commonwealth as cwc, worldaffairs as wac
-from music import anotherplanet as ape
+from music import anotherplanet as ape, fillmore as fillmore
 import xmllist as xml_list
 import pandas as pd
 
@@ -20,7 +20,8 @@ def main():
     goingson.append(wac.worldaffairsXML(xml_list.wac))  # World Affairs Council
 
     # Music
-    goingson.append(ape.apentertainmentHTML(xml_list.ape)) # Another Planet Entertainment
+    goingson.append(ape.apentertainmentHTML(xml_list.ape))  # Another Planet Entertainment
+    goingson.append(fillmore.fillmoreHTML(xml_list.fillmore))  # The Fillmore
 
     # Combine Result
     goingson = pd.concat(goingson, axis=0)

@@ -18,3 +18,8 @@ request = urllib2.Request(url_str)
 request.add_header('User-Agent', 'Mozilla/4.0')
 opener = urllib2.build_opener()
 ape = opener.open(request).read()
+url_str = 'http://thefillmore.com/calendar/'
+request = urllib2.Request(url_str)
+request.add_header('User-Agent', 'Mozilla/4.0')
+opener = urllib2.build_opener()
+fillmore = opener.open(request).read()
