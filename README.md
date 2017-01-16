@@ -1,14 +1,16 @@
 # Goings On About San Francisco
 
-<img src="./img/twin_peaks.jpg" crossorigin="https://mountsutro.org/library/sutro/hawk-thomas_sutro-tower-twin-peaks-silhouette.jpg" alt="Sutro &amp; Twin Peaks" height=75 width=450>
+<img src="./img/twin_peaks.jpg" crossorigin="https://mountsutro.org/library/sutro/hawk-thomas_sutro-tower-twin-peaks-silhouette.jpg" alt="Sutro &amp; Twin Peaks" width=350 height=100>
 
 Scraping cool things to do in San Francisco with Python
 
 ## Overview
 
-Goings On About San Francisco is a python tool to identify cool things to do in San Francisco.
+Goings On About San Francisco is a Python tool to identify cool things to do in San Francisco.
 
-Inspired by The New Yorker's [Goings On About Town](http://www.newyorker.com/goings-on-about-town) section, this tool is intended to make  searching through San Francisco events easy. "Goings On" tracks concerts, art shows, sports events, lectures, culinary &amp; nightlife activities by using various feeds &amp; APIs to build a database. Running the script on your local device will output a comma delimited table to a given directory.
+Inspired by The New Yorker's [Goings On About Town](http://www.newyorker.com/goings-on-about-town) section, this tool is intended to make  searching through San Francisco events easy. "Goings On" tracks concerts, art shows, sports events, lectures, culinary &amp; nightlife activities by using various feeds &amp; APIs to build a database.
+
+Running the script on your local device will output a comma delimited table to a given directory.
 
 ## How to Run
 
