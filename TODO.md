@@ -7,11 +7,11 @@ The main work for the Goings On tool is to grow and clean feeds from various cul
 - [x] Commonwealth Club #politics
 - [x] World Affairs Council #politics
 - [x] Another Planet Entertainment Concert Venues (Greek, Bill Graham, Fox, Tahoe, Independent) #music
-- [ ] Modify APE scrape to go 1 level down to descriptions #music
+- [x] The Fillmore #music
+- [ ] Modify music scrapes to go 1 level down to descriptions #music
 - [ ] Stubhub API #music
 - [ ] Oracle Arena &amp; Oakland Coliseum #music
 - [ ] The Chapel #music
-- [ ] The Fillmore #music
 - [ ] Rickshaw Stop #music
 - [ ] SF Symphony #music
 - [ ] SFMoMa #art
