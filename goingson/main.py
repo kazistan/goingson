@@ -5,6 +5,7 @@ from __future__ import print_function
 import sys
 import os
 from politics import commonwealth as cwc, worldaffairs as wac
+from music import anotherplanet as ape
 import xmllist as xml_list
 import pandas as pd
 
@@ -14,11 +15,12 @@ def main():
     # Define Empty List to Build Goings On Calendar
     goingson = []
 
-    # Load Commonwealth Club Data
-    goingson.append(cwc.commonwealthXML(xml_list.cwc))
+    # Politics
+    goingson.append(cwc.commonwealthXML(xml_list.cwc))  # Commonwealth Club
+    goingson.append(wac.worldaffairsXML(xml_list.wac))  # World Affairs Council
 
-    # Load World Affairs Council Data
-    goingson.append(wac.worldaffairsXML(xml_list.wac))
+    # Music
+    goingson.append(ape.apentertainmentHTML(xml_list.ape)) # Another Planet Entertainment
 
     # Combine Result
     goingson = pd.concat(goingson, axis=0)

@@ -11,3 +11,10 @@ request = urllib2.Request(url_str)
 request.add_header('User-Agent', 'Mozilla/4.0')
 opener = urllib2.build_opener()
 wac = opener.open(request).read()
+
+# Define HTML variables
+url_str = 'http://apeconcerts.com/'
+request = urllib2.Request(url_str)
+request.add_header('User-Agent', 'Mozilla/4.0')
+opener = urllib2.build_opener()
+ape = opener.open(request).read()
