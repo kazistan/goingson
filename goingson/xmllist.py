@@ -23,3 +23,8 @@ request = urllib2.Request(url_str)
 request.add_header('User-Agent', 'Mozilla/4.0')
 opener = urllib2.build_opener()
 fillmore = opener.open(request).read()
+url_str = 'https://www.sfmoma.org/exhibitions-events/?days=30'
+request = urllib2.Request(url_str)
+request.add_header('User-Agent', 'Mozilla/4.0')
+opener = urllib2.build_opener()
+sfmoma = opener.open(request).read()

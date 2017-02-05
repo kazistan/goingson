@@ -29,3 +29,7 @@ The main work for the Goings On tool is to grow and clean feeds from various cul
 - [ ] Front End Templates for Viewing GOSF
 - [ ] Django Framework
 - [ ] API for outputing list
+
+*Aggregation*
+
+- [ ] Switch "Events" to "Title", then use 'events' as local variable in arts
