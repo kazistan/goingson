@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 # Import Modules
+from __future__ import print_function
 import pandas as pd
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -42,17 +43,20 @@ def sfmomaHTML(html_str='', exhibits=False):
     descs = []
     locations = []
     links = []
+    n = len(shows)
 
     # Loop through each art show, scrape and deposit relevant field into each GOSF list
     # Note: Scraping the SFMoMa is challenging - if error for dateClean(show) pass for now
-    for show in shows:
+    for i, show in enumerate(shows):
         try:
             dates.append(dateClean(show))
             events.append(show.h6.get_text().encode('ascii', 'ignore'))
             descs.append(show.h4.get_text().encode('ascii', 'ignore'))
             locations.append('SFMoMA')
             links.append('https://www.sfmoma.org' + show.a['href'])
+            progressBar(n, i, 'SFMoMA')
         except ValueError:
+            progressBar(n, i, 'SFMoMA')
             pass
 
     # Put dates to datetime, remove HTML tags from description, and deposit title/link data into DataFrame
@@ -63,6 +67,9 @@ def sfmomaHTML(html_str='', exhibits=False):
     # Identify Source
     df['source'] = 'SFMoMA'
     df['category'] = 'Art'
+
+    # Print Empty Line for Progress Bar
+    print()
 
     return df
 
@@ -119,3 +126,20 @@ def dateClean(show):
     else:
         datestr = datetime.strptime(re.sub(r'[\.,\s]', '', datestr), '%B%d%Y')
     return datestr
+
+import sys
+
+def progressBar(n, i, name):
+    '''Print out progress bar based on loop through website scrape
+    :param n: number of lines to loop through
+    :param i: iterator
+    :param name: name of data currently processing
+    :return: print status to stdout
+    '''
+
+    # Run loop
+    sys.stdout.write('\r')
+    sys.stdout.write("%s:  [%-20s] %.1f%%" % (name,'='*int((i+1)*20/n), 100*(1.0+i)/n))
+    sys.stdout.flush()
+
+    return None
