@@ -4,7 +4,6 @@
 from __future__ import print_function
 import sys
 import os
-import xmllist as xml_list
 import pandas as pd
 import datetime
 from politics import commonwealth as cwc, worldaffairs as wac
@@ -15,23 +14,24 @@ from art import sfmoma as moma
 # Main Function
 def main():
 
+    # Print Begin to Cmdline
+    sys.stdout.write("%s\n" % ('-' * len('Goings On About San Francisco')) +
+                     "Goings On About \033[94mSan Francisco\033[0m\n" +
+                     "%s\n" % ('-' * len('Goings On About San Francisco')))
+
     # Define Empty List to Build Goings On Calendar
     goingson = []
 
     # Politics
     sys.stdout.write("\n%-20s\n" % ('-'*((20-len(' Politics '))/2) + ' Politics ' + '-'*((20-len(' Politics '))/2)))
-    goingson.append(cwc.commonwealthXML(xml_list.cwc))  # Commonwealth Club
-    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', 'Commonwealth Club'))
-    goingson.append(wac.worldaffairsXML(xml_list.wac))  # World Affairs Council
-    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', 'World Affairs Council'))
+    goingson.append(cwc.commonwealthXML())  # Commonwealth Club
+    goingson.append(wac.worldaffairsXML())  # World Affairs Council
 
     # Music
     sys.stdout.write("\n%-20s\n" % ('-' * ((20 - len(' Music ')) / 2) + ' Music ' + '-' * ((20 - len(' Music ')) / 2)))
-    goingson.append(ape.apentertainmentHTML(xml_list.ape))  # Another Planet Entertainment
-    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', 'Another Planet Entertainment'))
-    goingson.append(fillmore.fillmoreHTML(xml_list.fillmore))  # The Fillmore
-    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', 'The Fillmore'))
-    goingson.append(sfs.sfsymphonyHTML()) # SF Symphony
+    goingson.append(ape.apentertainmentHTML())  # Another Planet Entertainment
+    goingson.append(fillmore.fillmoreHTML())  # The Fillmore
+    goingson.append(sfs.sfsymphonyHTML())  # SF Symphony
 
     # Art
     sys.stdout.write("\n%-20s\n" % ('-' * ((20 - len(' Art ')) / 2) + ' Art ' + '-' * ((20 - len(' Art ')) / 2)))
