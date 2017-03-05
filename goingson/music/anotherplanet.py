@@ -5,10 +5,15 @@ from __future__ import print_function
 import pandas as pd
 from datetime import datetime
 from bs4 import BeautifulSoup
+import urllib2
+import sys
 
+# Global Variables
+URL = 'http://apeconcerts.com/'
+SOURCE = 'Another Planet Entertainment'
 
 # Functions
-def apentertainmentHTML(html_str=''):
+def apentertainmentHTML():
     '''Takes The Another Planet Entertainment website, returns DataFrame with cleaned values.
 
     This function scrapes the calendar section of the Bay-Area concert production company's website.  Since APE does
@@ -18,6 +23,22 @@ def apentertainmentHTML(html_str=''):
         html_str (str) : html website
 
     '''
+
+    # Print Status
+    sys.stdout.write("[%-2s] %s" % ('', SOURCE))
+    sys.stdout.flush()
+
+    # Load Website, max 5 second timeout
+    try:
+        request = urllib2.Request(URL)
+        request.add_header('User-Agent', 'Mozilla/4.0')
+        opener = urllib2.build_opener()
+        html_str = opener.open(request, timeout=4).read()
+    except urllib2.URLError:
+        sys.stdout.write('\r')
+        sys.stdout.write("[%-4s] %s\n" % ('\033[91m' + 'fail' + '\033[0m', SOURCE))
+        sys.stdout.flush()
+        return None
 
     # Put XML into BeautifulSoup ResultSet Class
     soup = BeautifulSoup(html_str, 'lxml')
@@ -48,6 +69,12 @@ def apentertainmentHTML(html_str=''):
         .rename(columns={0: 'date', 1: 'event', 2: 'desc', 3: 'location', 4: 'link'})
 
     # Identify Source
-    df['source'] = 'Another Planet Entertainment'; df['category'] = 'Music'
+    df['source'] = SOURCE
+    df['category'] = 'Music'
+
+    # Print Success
+    sys.stdout.write('\r')
+    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', SOURCE))
+    sys.stdout.flush()
 
     return df

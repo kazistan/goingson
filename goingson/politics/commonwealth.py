@@ -3,19 +3,19 @@
 # Import Modules
 from __future__ import print_function
 import pandas as pd
-from datetime import datetime
 import re as re
 import xml.etree.ElementTree as et
+import urllib2
+import sys
+from datetime import datetime
 
+# Global Variables
+URL = 'https://www.commonwealthclub.org/events/rss'
+SOURCE = 'Commonwealth Club'
 
 # Functions
-def commonwealthXML(xml_str):
+def commonwealthXML():
     '''Takes The Commonwealth Club XML string from events RSS, returns DataFrame with cleaned values.
-
-    Parameters
-    ----------
-        xml_str : str
-            string of XML RSS feed, imported using urllib2
 
     Dependencies
     ------------
@@ -25,6 +25,19 @@ def commonwealthXML(xml_str):
         pandas as pd - pandas method
 
     '''
+
+    # Print Status
+    sys.stdout.write("[%-2s] %s" % ('', SOURCE))
+    sys.stdout.flush()
+
+    # Load Website, max 5 second timeout
+    try:
+        xml_str = urllib2.urlopen(URL, timeout=5).read()
+    except urllib2.URLError:
+        sys.stdout.write('\r')
+        sys.stdout.write("[%-4s] %s\n" % ('\033[91m' + 'fail' + '\033[0m', SOURCE))
+        sys.stdout.flush()
+        return None
 
     # Put XML into ElementTree class
     root = et.fromstring(xml_str)
@@ -48,6 +61,12 @@ def commonwealthXML(xml_str):
         .rename(columns={0: 'date', 1: 'event', 2: 'desc', 3: 'location', 4: 'link'})
 
     # Identify Source
-    df['source'] = 'Commonwealth Club'; df['category'] = 'Politics'
+    df['source'] = SOURCE
+    df['category'] = 'Politics'
+
+    # Print Success
+    sys.stdout.write('\r')
+    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', SOURCE))
+    sys.stdout.flush()
 
     return df

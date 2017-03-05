@@ -3,13 +3,19 @@
 # Import Modules
 from __future__ import print_function
 import pandas as pd
-from datetime import datetime
 import re as re
 import xml.etree.ElementTree as et
+import urllib2
+import sys
+from datetime import datetime
+
+# Global Variables
+URL = 'http://www.worldaffairs.org/events?format=feed'
+SOURCE = 'World Affairs Council'
 
 # Functions
 
-def worldaffairsXML(xml_str):
+def worldaffairsXML():
     '''Takes the World Affairs Council XML string from events RSS, returns DataFrame with cleaned values.
 
     Parameters
@@ -25,6 +31,22 @@ def worldaffairsXML(xml_str):
         pandas as pd - pandas method
 
     '''
+
+    # Print Status
+    sys.stdout.write("[%-2s] %s" % ('', SOURCE))
+    sys.stdout.flush()
+
+    # Load Website, max 5 second timeout
+    try:
+        request = urllib2.Request(URL)
+        request.add_header('User-Agent', 'Mozilla/4.0')
+        opener = urllib2.build_opener()
+        xml_str = opener.open(request, timeout=4).read()
+    except urllib2.URLError:
+        sys.stdout.write('\r')
+        sys.stdout.write("[%-4s] %s\n" % ('\033[91m' + 'fail' + '\033[0m', SOURCE))
+        sys.stdout.flush()
+        return None
 
     # Put XML into ElementTree class
     root = et.fromstring(xml_str)
@@ -68,6 +90,12 @@ def worldaffairsXML(xml_str):
         columns={0: 'date', 1: 'event', 2: 'desc', 3: 'location', 4: 'link'})
 
     # Define Categorical Variables
-    df['source'] = 'World Affairs Council'; df['category'] = 'Politics'
+    df['source'] = 'World Affairs Council'
+    df['category'] = 'Politics'
+
+    # Print Success
+    sys.stdout.write('\r')
+    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', SOURCE))
+    sys.stdout.flush()
 
     return df
