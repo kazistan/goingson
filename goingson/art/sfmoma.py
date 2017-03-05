@@ -5,11 +5,16 @@ from __future__ import print_function
 import pandas as pd
 from datetime import datetime
 from bs4 import BeautifulSoup
+import urllib2
+import sys
 import re
 
+# Global Variables
+URL = 'https://www.sfmoma.org/exhibitions-events/?days=30'
+SOURCE = 'SFMoMA'
 
 # Functions
-def sfmomaHTML(html_str='', exhibits=False):
+def sfmomaHTML(exhibits=False):
     '''Takes the SF MoMa website, returns DataFrame with cleaned values.
 
     As a museum, we segregate possible return values into a list of several classes:
@@ -17,7 +22,6 @@ def sfmomaHTML(html_str='', exhibits=False):
         events: specific events held at the museum (e.g. talks, parties)
 
     Args
-        html_str (str) : html website
         exhibits (bool) : returns exhibits or events at museum
 
     TODO:
@@ -26,9 +30,15 @@ def sfmomaHTML(html_str='', exhibits=False):
 
     '''
 
+    # Print Status
+    sys.stdout.write("[%-2s] %s" % ('', SOURCE))
+    sys.stdout.flush()
+
     # Art Gallery Specific Search Term
     event_type = 'exhibition' if exhibits else 'event'
 
+    # Load Webpage
+    html_str = scrapeWebsite(url=URL)
 
     # Put XML into BeautifulSoup ResultSet Class
     soup = BeautifulSoup(html_str, 'lxml')
@@ -43,7 +53,7 @@ def sfmomaHTML(html_str='', exhibits=False):
     descs = []
     locations = []
     links = []
-    n = len(shows)
+    # n = len(shows)
 
     # Loop through each art show, scrape and deposit relevant field into each GOSF list
     # Note: Scraping the SFMoMa is challenging - if error for dateClean(show) pass for now
@@ -54,9 +64,9 @@ def sfmomaHTML(html_str='', exhibits=False):
             descs.append(show.h4.get_text().encode('ascii', 'ignore'))
             locations.append('SFMoMA')
             links.append('https://www.sfmoma.org' + show.a['href'])
-            progressBar(n, i, 'SFMoMA')
+            # progressBar(n, i, 'SFMoMA')
         except ValueError:
-            progressBar(n, i, 'SFMoMA')
+            # progressBar(n, i, 'SFMoMA')
             pass
 
     # Put dates to datetime, remove HTML tags from description, and deposit title/link data into DataFrame
@@ -65,11 +75,16 @@ def sfmomaHTML(html_str='', exhibits=False):
         .rename(columns={0: 'date', 1: 'event', 2: 'desc', 3: 'location', 4: 'link'})
 
     # Identify Source
-    df['source'] = 'SFMoMA'
+    df['source'] = SOURCE
     df['category'] = 'Art'
 
     # Print Empty Line for Progress Bar
-    print()
+    #print()
+
+    # Print "ok" result
+    sys.stdout.write('\r')
+    sys.stdout.write("[%-2s] %s\n" % ('\033[92m' + 'ok' + '\033[0m', SOURCE))
+    sys.stdout.flush()
 
     return df
 
@@ -143,3 +158,23 @@ def progressBar(n, i, name):
     sys.stdout.flush()
 
     return None
+
+def scrapeWebsite(url, headers={'User-Agent':'Mozilla/4.0'}):
+    '''Returns HTML file scraped from website for use in BeautifulSoup scrape
+    :param url:str - url of target website
+    :param headers:dict - dictionary of header files
+    :return:str - html of website
+    '''
+
+    # Build Request
+    request = urllib2.Request(url)
+
+    # Add Headers
+    for key, value in headers.iteritems():
+        request.add_header(key, value)
+
+    # Connect to Website
+    opener = urllib2.build_opener()
+    result = opener.open(request).read()
+
+    return result
