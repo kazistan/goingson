@@ -56,6 +56,7 @@ def main():
     assert os.path.isdir(arg1), '<directory> is not absolute path: %r' % arg1
 
     goingson.to_csv(arg1 + 'goingson.csv')
+    sys.stdout.write('\nFile saved to: %sgoingson.csv\n' % arg1)
 
     return
 
