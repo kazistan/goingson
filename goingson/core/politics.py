@@ -1,0 +1,128 @@
+#!/usr/bin/python
+
+"""
+Politics sub-classes of Goings On Wedscrape Class
+"""
+
+import goingson
+
+CATEGORY = 'Politics'
+
+class Commonwealth(goingson.GoingsOn):
+
+	URL = 'https://www.commonwealthclub.org/events/rss'
+	SOURCE = 'Commonwealth Club'
+	CATEGORY = CATEGORY
+
+	def parse_url(self):
+
+		# Print Status
+		self.stdoutWrite(None)
+
+		# Scrape Website
+		html_str = self.scrapeWebsite()
+
+		# Put into BeautifulSoup Object unless scrape error
+		try:
+			soup = goingson.BeautifulSoup(html_str, 'xml')
+		except TypeError:
+			return None
+
+		# Identify Items
+		events = soup.find_all('item')
+
+		# Loop through each event, scrape and deposit
+		for event in events:
+
+			dateStr, title, desc, loc = self.extract_variables(event)
+
+			self.dates.append(dateStr)
+			self.titles.append(title)
+			self.descs.append(desc)
+			self.locations.append(loc)
+			self.links.append(event.find('link').text)
+
+		# Print Status
+		self.stdoutWrite(True)
+
+		return None
+
+	def extract_variables(self, event):
+
+		# Isolate Datestring
+		dateStr = event.find('title').text[event.find('title').text.rfind('-')+2:]
+
+		# Format Datestring
+		dateStr = goingson.datetime.strptime(dateStr, '%A, %B %d, %Y %I:%M %p')
+
+		# Extract Title
+		title = event.find('title').text[:event.find('title').text.rfind('-')-1].encode('ascii','ignore')
+
+		# Remove HTML elements from Description
+		desc = goingson.re.sub('(<[^<]+?>|\n|\t)', '',
+			event.find('description').text).encode('ascii','ignore').replace('\r', ' ')
+
+		# Identify Location
+		loc = [goingson.re.sub('Location:\s{0,1}', '', line.encode('ascii', 'ignore'))
+				for line in goingson.re.sub('(<[^<]+?>)', '', event.text)
+				.split('\n') if goingson.re.search('Location', line) != None][0]
+
+		return dateStr, title, desc, loc
+
+class WorldAffairsCouncil(goingson.GoingsOn):
+
+	URL = 'http://www.worldaffairs.org/events?format=feed'
+	SOURCE = 'World Affairs Council'
+	CATEGORY = CATEGORY
+
+	def parse_url(self):
+
+		# Print Status
+		self.stdoutWrite(None)
+
+		# Scrape Website
+		html_str = self.scrapeWebsite()
+
+		# Put into BeautifulSoup Object
+		try:
+			soup = goingson.BeautifulSoup(html_str, 'xml')
+		except TypeError:
+			return None
+
+		# Identify Events
+		events = soup.find_all('item')
+
+		# Loop through each event, scrape and deposit relevant field into each GOSF list
+		for event in events:
+			
+			dateStr, loc, desc = self.desc_parse(event.description.text)
+
+			self.dates.append(dateStr)
+			self.titles.append(event.title.text)
+			self.descs.append(desc)
+			self.locations.append(loc)
+			self.links.append(event.link.text)
+
+		# Print Status
+		self.stdoutWrite(True)
+
+		return None
+
+	def desc_parse(self, desc):
+
+		# List relevant html timestamp syntax
+		tStart, tEnd, iStart = '<time datetime=', '<time>', '<img'
+
+		# Isolate Datestring
+		dateStr = desc[desc.index(tStart) + len(tStart) : desc.index(tEnd)]
+
+		# Extract Date using Datetime Methods
+		dateStr = goingson.datetime.strptime(''.join(dateStr.split(' ')[:5]), '"%a,%d%b%Y%H:%M:%S')
+
+		# Extract Location using <img> location + regex
+		loc = goingson.re.sub('(<[^<]+?>|\n|\t)', '', desc[desc.index(tEnd):desc.index(iStart)])
+
+		# Extract Description
+		description = goingson.re.sub('(<[^<]+?>|\n|\t)', '', desc[desc.index(iStart):]).strip()
+
+		return dateStr, loc, description
