@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Data Structure for 5-feature webscrape
+Data Structure for 5-feature web-scrape and package operations
 """
 
 import urllib2
