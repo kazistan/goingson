@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Data Structure for 5-feature web-scrape and package operations
+Data Structure for 5-feature web-scrape and various package operations
 """
 
 import urllib2
@@ -18,6 +18,31 @@ from bs4 import BeautifulSoup
 # Define GoingsOn Class
 
 class GoingsOn(object):
+	'''
+	Data Structure for 5-feature web-scrape and package operations.
+
+    Abstract Class used to construct child GoingsOn classes.  All instance
+    attributes are 1-n lists which the parse_url() method deposits results
+    from the web-scrape.  The parse_url() method is defined within each
+    child class according to the scraping requirements for each website.
+
+    All other methods detailed below are used within the parse_url() method
+    or output results to a different data stucture (e.g. toDF() for a
+    Pandas DataFrame).
+
+    Parameters
+    ----------
+    dates : list, DateTime dates
+    	Dates for each event
+    titles : list, str
+    	Title of event
+    descs: list, str
+    	Description of event
+    locations: list, str
+    	Location of event (default value SOURCE)
+    link: list, str
+    	Link to event on website
+	'''
 
 	URL = ''
 	SOURCE = ''
@@ -33,10 +58,25 @@ class GoingsOn(object):
 		self.parse_url()
 
 	def scrapeWebsite(self, headers={'User-Agent':'Mozilla/4.0'}):
-		'''Returns HTML file scraped from website for use in BeautifulSoup scrape
-		:param url:str - url of target website
-		:param headers:dict - dictionary of header files
-		:return:str - html of website
+		'''
+		Returns text from website scrape using urllib2.
+
+		This method builds a url request defaulting to a simple browser header.
+		Request is made to the URL variable with a 4 second timeout, in case
+		the website is under maintenance.
+
+		If request hangs, print [fail] to stdout.
+
+		Parameters
+		----------
+		headers : dict
+			Dictionary of headers to pass to urllib2 request builder
+
+		Returns
+		-------
+		result : str
+			Text of scraped website
+
 		'''
 		try:
 			# Build Request
@@ -57,6 +97,15 @@ class GoingsOn(object):
 
 
 	def stdoutWrite(self, success=True):
+		'''
+		Writes colored status to stdout.
+
+		Parameters
+		----------
+		success : bool or None
+			Boolean indicates completion/failure of operation.  None
+			leaves status box empty
+		'''
 
 		if success not in {True, False, None}:
 			raise ValueError('Success must be boolean or NoneType')
@@ -75,6 +124,13 @@ class GoingsOn(object):
 		return None
 
 	def toDF(self):
+		'''
+		Writes instance arguments to a Pandas DataFrame.
+
+		Returns
+		-------
+		df : Pandas DataFrame
+		'''
 
 		df = pd.DataFrame([(date, title, desc, loc, link) for (date, title, desc, loc, link) in 
 			zip(self.dates, self.titles, self.descs, self.locations, self.links)]).rename(
@@ -87,6 +143,16 @@ class GoingsOn(object):
 		return df
 
 def printSection(CATEGORY='start'):
+	'''
+	Writes section title to stdout.
+
+	Cosmetic function to help user visualize status of web scrapes.
+
+	Parameters
+	----------
+	CATEGORY : str
+		String takes either "start", "end", or global CATEGEORY variable
+	'''
 
 	if CATEGORY == 'start':
 		
@@ -108,6 +174,20 @@ def printSection(CATEGORY='start'):
 	return None
 
 def combine_results(goingsonsf):
+	'''
+	Build single data structure of GoingsOn results starting from today.
+
+	Parameters
+	----------
+	goingsonsf : Pandas DataFrame
+		DataFrame from GoingsOn child classes
+
+	Returns
+	-------
+	goingsonsf : Pandas DataFrame
+		Single DataFrame of all events, starting from today
+
+	'''
 
 	# Concatinate
 	goingsonsf = pd.concat(goingsonsf, axis=0)
@@ -121,6 +201,16 @@ def combine_results(goingsonsf):
 	return goingsonsf[['date', 'event', 'desc', 'location', 'link', 'source', 'category']]
 
 def outputResults(goingson_df, arg1=sys.argv[1]):
+	'''
+	Outputs GoingsOn resutls to passed directory from commandline arguments
+
+	Parameters
+	----------
+	goingson_df : Pandas DataFrame
+		DataFrame of a GoingsOn child class
+	arg1 : str
+		Output directory retrieved from commandline arguments
+	'''
 
 	# Check if valid directory is given
 	try:
