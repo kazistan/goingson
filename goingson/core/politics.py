@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Politics sub-classes of Goings On Wedscrape Class
+Politics child classes of Goings On
 """
 
 import goingson
@@ -9,12 +9,38 @@ import goingson
 CATEGORY = 'Politics'
 
 class Commonwealth(goingson.GoingsOn):
+	'''
+	The Commonwealth Club of California: San Francisco
+
+	Address
+	-------
+	555 Post Street
+	San Francisco, CA 94102-9824
+
+	Office Hours
+	------------
+	Mon-Thu: 10am-5pm
+	Fri: 10am-2pm
+
+	Contact
+	-------
+	Phone: 415.597.6700
+	Email: info@commonwealthclub.org
+
+	Website
+	-------
+	https://www.commonwealthclub.org/about
+		(Accessed on March 12, 2017)
+	'''
 
 	URL = 'https://www.commonwealthclub.org/events/rss'
 	SOURCE = 'Commonwealth Club'
 	CATEGORY = CATEGORY
 
 	def parse_url(self):
+		'''
+		Parses web scrape into class attributes.
+		'''
 
 		# Print Status
 		self.stdoutWrite(None)
@@ -48,6 +74,20 @@ class Commonwealth(goingson.GoingsOn):
 		return None
 
 	def extract_variables(self, event):
+		'''
+		Returns DateTime object, event title, description, and location for BeautifulSoup text
+
+		Parameters
+		----------
+		event : BeautifulSoup Object
+
+		Returns
+		-------
+		dateStr : DateTime Object
+		title : str
+		desc : str
+		loc : str
+		'''
 
 		# Isolate Datestring
 		dateStr = event.find('title').text[event.find('title').text.rfind('-')+2:]
@@ -70,12 +110,32 @@ class Commonwealth(goingson.GoingsOn):
 		return dateStr, title, desc, loc
 
 class WorldAffairsCouncil(goingson.GoingsOn):
+	'''
+	World Affairs Council of Northern California
+
+	Address
+	-------
+	312 Sutter Street, Suite 200
+	San Francisco, CA 94108
+
+	Contact
+	-------
+	Phone: 415.293.4600
+
+	Website
+	-------
+	https://www.worldaffairs.org/about-us
+		(Accessed on March 12, 2017)
+	'''
 
 	URL = 'http://www.worldaffairs.org/events?format=feed'
 	SOURCE = 'World Affairs Council'
 	CATEGORY = CATEGORY
 
 	def parse_url(self):
+		'''
+		Parses web scrape into class attributes.
+		'''
 
 		# Print Status
 		self.stdoutWrite(None)
@@ -109,6 +169,19 @@ class WorldAffairsCouncil(goingson.GoingsOn):
 		return None
 
 	def desc_parse(self, desc):
+		'''
+		Returns DateTime Object, Location, and Description of Event.
+
+		Parameters
+		----------
+		desc : str
+
+		Returns
+		-------
+		dateStr: DateTime Object
+		loc: str
+		description: str
+		'''
 
 		# List relevant html timestamp syntax
 		tStart, tEnd, iStart = '<time datetime=', '<time>', '<img'

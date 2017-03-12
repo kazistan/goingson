@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Art sub-classes of Goings On Wedscrape Class
+Art child classes of GoingsOn
 """
 
 import goingson
@@ -9,12 +9,40 @@ import goingson
 CATEGORY = 'Art'
 
 class SFMoMA(goingson.GoingsOn):
+	'''
+	San Francisco Museum of Modern Art (SFMoMA)
 
+	Address
+	-------
+	151 Third Street
+	San Francisco, CA 94103
+
+	Hours
+	-----
+	Open Friday-Tuesday 10am-5pm
+	Open Thursday 10am-9pm
+	Close Wednesday
+	Public Spaces open at 9:30am
+
+	Contact
+	-------
+	Phone: 415.357.4000
+
+	Website
+	-------
+	https://www.sfmoma.org/about/
+		(Accessed on March 12, 2017)
+	'''
+
+	# Global Variables
 	URL = 'https://www.sfmoma.org/exhibitions-events/?days=30'
 	SOURCE = 'SFMoMA'
 	CATEGORY = CATEGORY
 
 	def parse_url(self):
+		'''
+		Parses website scrape into class attributes.
+		'''
 
 		# Print Status
 		self.stdoutWrite(None)
@@ -52,10 +80,17 @@ class SFMoMA(goingson.GoingsOn):
 
 	def dateClean(self, event):
 		'''
-		Function to clean up datestrings from beautiful soup objects
-		:param show: beautiful soup sfmoma object
-		:return: datetime variable
+		Returns DateTime objects from beautiful soup text
+
+		Parameters
+		----------
+		event : BeautifulSoup obejct
+
+		Returns
+		-------
+		dateStr : DateTime Object
 		'''
+
 		# SFMoMa Unique String Substitutions
 		days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 		momaDict = dict({day:'' for day in days}.items() + \
@@ -91,11 +126,22 @@ class SFMoMA(goingson.GoingsOn):
 		return dateStr
 
 	def multiple_replace(self, dict, text):
-		'''Loops through dictionary of substitutions for regex with text
-		:param dict: (dict, str:str) dictionary used for substitutions
-		:param text: (str) text for regex manipulation
-		:return: (str) with regex substitute over each key from dictionary
-		original source: stackoverflow dicussion - http://bit.ly/2jn2cQy
+		'''
+		Returns text with dictionary values replaced through regex operations.
+
+		Original source: StackOverflow (http://bit.ly/2jn2cQy)
+
+		Parameters
+		----------
+		dict : dictionary
+			dictionary of strings used for substitutions
+		text : str
+			text to target for str replacements
+
+		Returns
+		-------
+		text : str
+			text with string keys replaced with dict values through regex substitution
 		'''
 
 		# Create a regular expression  from the dictionary keys
@@ -103,4 +149,3 @@ class SFMoMA(goingson.GoingsOn):
 
 		# For each match, look-up corresponding value in dictionary
 		return regex.sub(lambda x: dict[x.string[x.start():x.end()]], text)
-

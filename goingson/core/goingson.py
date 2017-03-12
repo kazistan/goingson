@@ -22,8 +22,8 @@ class GoingsOn(object):
 	Data Structure for 5-feature web-scrape and package operations.
 
 	Abstract Class used to construct child GoingsOn classes.  All instance
-	attributes are 1-n lists which the parse_url() method deposits results
-	from the web-scrape.  The parse_url() method is defined within each
+	attributes are 1-n lists which the parse_url() method deposits from
+	the scrapeWebiste() method.  The parse_url() method is defined within each
 	child class according to the scraping requirements for each website.
 
 	All other methods detailed below are used within the parse_url() method
@@ -155,19 +155,15 @@ def printSection(CATEGORY='start'):
 	'''
 
 	if CATEGORY == 'start':
-		
 		sys.stdout.write("%s\n" % ('-' * len('Goings On About San Francisco')) +
 			"Goings On About \033[94mSan Francisco\033[0m\n" +
 			"%s\n" % ('-' * len('Goings On About San Francisco')))
 
 	elif CATEGORY == 'end':
-
 		message = 'File Saved to ' + sys.argv[1] + 'goingson.csv'
-
 		sys.stdout.write("\n%s\n%s\n%s\n" % ('-'*len(message), message, '-'*len(message)))
 
 	else:
-
 		sys.stdout.write("\n%-20s\n" % ('-'*((20-len(' ' + CATEGORY + ' '))/2) + 
 			' ' + CATEGORY + ' ' + '-'*((20-len(' ' + CATEGORY + ' '))/2)))
 

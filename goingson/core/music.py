@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Music sub-classes of Goings On Wedscrape Class
+Music child classes of Goings On
 """
 
 import goingson
@@ -9,12 +9,33 @@ import goingson
 CATEGORY = 'Music'
 
 class Fillmore(goingson.GoingsOn):
+	'''
+	The Fillmore
+
+	Address
+	-------
+	1805 Geary Blvd
+	San Francisco, CA 94115
+
+	Contact
+	-------
+	Phone: 415.346.3000
+	Email: thefillmore@livenation.com
+
+	Website
+	-------
+	http://thefillmore.com/faq/
+		(Accessed on March 12, 2017)
+	'''
 
 	URL = 'http://thefillmore.com/calendar/'
 	SOURCE = 'The Fillmore'
 	CATEGORY = CATEGORY
 
 	def parse_url(self):
+		'''
+		Parses web scrape into class attributes.
+		'''
 
 		# Print Status
 		self.stdoutWrite(None)
@@ -48,12 +69,32 @@ class Fillmore(goingson.GoingsOn):
 		return None
 
 class APE(goingson.GoingsOn):
+	'''
+	Another Planet Entertainment
+
+	Venues
+	------
+	Greek Theatreat atUC Berkeley, Bill Graham Civic Auditorium, The Independent, Fox Theater Oakland,
+	Lake Tahoe Outdoors at Harveys, Outside Lands in Golden Gate Park, Treasure Island Music Festival,
+
+	Contact
+	-------
+	Email: contact@anotherplanetent.com
+
+	Website
+	-------
+	http://apeconcerts.com/about/
+		(Accessed on March 11, 2017)
+	'''
 
 	URL = 'http://apeconcerts.com/'
 	SOURCE = 'Another Planet Entertainment'
 	CATEGORY = CATEGORY
 
 	def parse_url(self):
+		'''
+		Parses web scrape into class attributes.
+		'''
 
 		# Print Status
 		self.stdoutWrite(None)
@@ -84,18 +125,42 @@ class APE(goingson.GoingsOn):
 
 		return None
 
-
-## SF Symphony
-
 class SFSymphony(goingson.GoingsOn):
+	'''
+	San Francisco Symphony
+
+	Address
+	-------
+	201 Van Ness Ave
+	San Francisco, CA 94102
+
+	Box Office Hours
+	----------------
+	Mon-Fri: 10am-6pm
+	Sat: 12pm-6pm
+	Sun: 2hrs prior to concert
+
+	Contact
+	-------
+	Phone: 415.864.6000
+	Email: patronservices@sfsymphony.org
+
+	Website
+	-------
+	http://www.sfsymphony.org
+		(Accessed on March 12, 2017)
+	'''
 
 	URL = 'http://www.sfsymphony.org/Buy-Tickets/Calendar.aspx'
 	SOURCE = 'San Francisco Symphony'
 	CATEGORY = CATEGORY
 
 	def parse_url(self):
+		'''
+		Parses web scrape into class attributes.
+		'''
 
-	# Print Status
+		# Print Status
 		self.stdoutWrite(None)
 
 		# Scrape Website
@@ -110,7 +175,7 @@ class SFSymphony(goingson.GoingsOn):
 		# Identify All Events
 		shows = [show for show in soup.find_all('div', class_='calendar-events-details')]
 
-	# Loop through each concert, scrape and deposit relevant field into each GOSF list
+		# Loop through each concert, scrape and deposit relevant field into each GOSF list
 		for show in shows:
 			# Get List of Dates
 			dt_range = self.sfsDateClean(show)
@@ -127,9 +192,16 @@ class SFSymphony(goingson.GoingsOn):
 		return None
 
 	def sfsDateClean(self, event):
-		'''Takes BeautifulSoup Event, Returns list of Dates
-		:param event:BeautifulSoup Object - soup object scraped from SFSymphony Website
-		:return: list of dates
+		'''
+		Returns DateTime index from beautiful soup text
+
+		Parameters
+		----------
+		event : BeautifulSoup obejct
+
+		Returns
+		-------
+		dateStr : DateTime Index
 		'''
 
 		# Extract Date
