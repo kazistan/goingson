@@ -26,7 +26,7 @@ def main():
 
 	# Combine and Output Results
 	goingsonsf = goingson.combine_results(goingsonsf)
-	goingson.outputResults(goingson_df = goingsonsf)
+	goingson.outputResults(goingson_df=goingsonsf)
 	goingson.printSection('end')
 
 

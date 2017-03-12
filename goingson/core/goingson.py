@@ -21,27 +21,27 @@ class GoingsOn(object):
 	'''
 	Data Structure for 5-feature web-scrape and package operations.
 
-    Abstract Class used to construct child GoingsOn classes.  All instance
-    attributes are 1-n lists which the parse_url() method deposits results
-    from the web-scrape.  The parse_url() method is defined within each
-    child class according to the scraping requirements for each website.
+	Abstract Class used to construct child GoingsOn classes.  All instance
+	attributes are 1-n lists which the parse_url() method deposits results
+	from the web-scrape.  The parse_url() method is defined within each
+	child class according to the scraping requirements for each website.
 
-    All other methods detailed below are used within the parse_url() method
-    or output results to a different data stucture (e.g. toDF() for a
-    Pandas DataFrame).
+	All other methods detailed below are used within the parse_url() method
+	or output results to a different data stucture (e.g. toDF() for a
+	Pandas DataFrame).
 
-    Parameters
-    ----------
-    dates : list, DateTime dates
-    	Dates for each event
-    titles : list, str
-    	Title of event
-    descs: list, str
-    	Description of event
-    locations: list, str
-    	Location of event (default value SOURCE)
-    link: list, str
-    	Link to event on website
+	Parameters
+	----------
+	dates : list, DateTime dates
+	    Dates for each event
+	titles : list, str
+	    Title of event
+	descs: list, str
+	    Description of event
+	locations: list, str
+	    Location of event (default value SOURCE)
+	link: list, str
+	    Link to event on website
 	'''
 
 	URL = ''
