@@ -54,10 +54,7 @@ class Fillmore(goingson.GoingsOn):
 
 		# Loop through each concert, scrape and deposit relevant field into each GOSF list
 		for concert in concerts:
-			datestr = concert.find(class_='content').get_text()
-			datestr = goingson.datetime.strptime(datestr[:datestr.index('//')].replace('.',''),
-				'%A, %B %d, %YDoors %I:%M %p ')
-			self.dates.append(datestr)
+			self.dates.append(self.date_clean(concert.find(class_='content').get_text()))
 			self.titles.append(concert.find(class_='title').get_text().encode('ascii','ignore'))
 			self.descs.append('INSERT DESCRIPTION FROM LINK Follow-up')
 			self.locations.append(self.SOURCE)
@@ -67,6 +64,34 @@ class Fillmore(goingson.GoingsOn):
 		self.stdoutWrite(True)
 
 		return None
+
+	def date_clean(self, datestr):
+		'''
+		Returns datetime from fillmore string
+
+		Parameters
+		----------
+		datestr : str
+			Date section of Fillmore website
+
+		Returns
+		-------
+		datestr : DateTime Object
+		'''
+
+		# Focus on location of date in string
+		datestr = datestr[:datestr.index('//')]
+
+		# Identify if colon punctuation in string
+		if datestr.find(":") != -1:
+			datestr = goingson.datetime.strptime(goingson.re.sub(r'\W', '', datestr),
+				'%A%B%d%YDoors%I%M%p')
+		else:
+			datestr = goingson.datetime.strptime(goingson.re.sub(r'\W', '', datestr),
+				'%A%B%d%YDoors%I:%M%p')
+
+		return datestr
+
 
 class APE(goingson.GoingsOn):
 	'''
